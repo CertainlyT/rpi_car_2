@@ -36,7 +36,6 @@ from TurnModule import *
 # student assignment (2)
 
 
-
 # =======================================================================
 # import go_forward_any(), go_backward_any(), stop(), LeftPwm(),
 # RightPwm(), pwm_setup(), and pwm_low() methods in the module of go_any
@@ -59,15 +58,15 @@ pwm_setup()
 #  to perform the project3 with ultra sensor
 #  and swing turn
 # =======================================================================
-dis = 25 # ??
+dis = 25  # distance standard value
 
 # when obstacle=1, the power and
 # running time of the first turn
-PointPr = 68  # student assignment (8)
-PointTr = 0.13  # student assignment (9)
-SwingPr = 70
-SwingTr = 0.59
-obstacle = 1
+PointPr = 68  # speed of point turn
+PointTr = 0.43  # duration of point turn
+SwingPr = 70  # speed of swing turn
+SwingTr = 0.89  # duration of swing turn
+obstacle = 1  # a number of obstacles
 
 try:
     distance = getDistance()
@@ -75,31 +74,29 @@ try:
         distance = getDistance()
         # ultra sensor replies the distance back
         print('distance= ', distance)
+        # If vehicle pass 2 obstalces, it will drive 1 more second and stop.
         if obstacle == 3:
             go_forward(70, 1)
             pwm_low()
             break
         # when the distance is above the dis, moving object forwards
-        elif (distance > dis):
+        elif distance > dis:
             go_forward_any(70)
-            
         # when the distance is below the dis, moving object stops
         else:
             # stop and wait 1 second
             stop()
             sleep(1)
+            # select type of turn
             if obstacle == 1:
                 leftPointTurn(PointPr, PointTr)
-                sleep(0.3)
                 obstacle += 1
             else:
                 leftSwingTurn(SwingPr, SwingTr)
-                sleep(0.3)
                 obstacle += 1
-            ########################################################
-            ### please continue the code or change the above code
-            ### # student assignment (10)
-            ########################################################
+            # after turning, stop and wait 0.3 second
+            stop()
+            sleep(0.3)
 
 
 # when the Ctrl+C key has been pressed,

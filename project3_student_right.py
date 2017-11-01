@@ -59,15 +59,15 @@ pwm_setup()
 #  to perform the project3 with ultra sensor
 #  and swing turn
 # =======================================================================
-dis = 20  # ??
+dis = 20  # distance standard value
 
 # when obstacle=1, the power and
 # running time of the first turn
-PointPr = 80  # student assignment (8)
-PointTr = 0.45  # student assignment (9)
-SwingPr = 80
-SwingTr = 0.85
-obstacle = 1
+PointPr = 80  # speed of point turn
+PointTr = 0.45  # duration of point turn
+SwingPr = 80  # speed of swing turn
+SwingTr = 0.85  # duration of swing turn
+obstacle = 1  # a number of obstacles
 
 try:
     distance = getDistance()
@@ -75,7 +75,7 @@ try:
         distance = getDistance()
         # ultra sensor replies the distance back
         print('distance= ', distance)
-        
+        # If vehicle pass 2 obstalces, it will drive 1 more second and stop.
         if obstacle == 3:
             go_forward(70, 1)
             pwm_low()
@@ -86,18 +86,17 @@ try:
             # stop and wait 1 second
             stop()
             sleep(1)
+            # select type of turn
             if obstacle == 1:
                 rightSwingTurn(SwingPr, SwingTr)
                 obstacle += 1
             else:
                 rightPointTurn(PointPr, PointTr)
                 obstacle += 1
+            # after turning, stop and wait 0.3 second
             stop()
             sleep(0.3)
-            ########################################################
-            ### please continue the code or change the above code
-            ### # student assignment (10)
-            ########################################################
+
 
 
 # when the Ctrl+C key has been pressed,

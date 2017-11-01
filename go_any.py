@@ -79,7 +79,16 @@ def leftmotor(x):
     else:
         print('Config Error')
 
-
+# ===========================================================================
+# Control the DC motor to make it rotate clockwise, so the car will
+# move forward.
+# if you have different direction, you need to change HIGH to LOW
+# or LOW to HIGH,in MotorRight_A
+# and LOW to HIGH or HIGH to LOW in MotorRight_B
+# if you have different direction, you need to change HIGH to LOW
+# or LOW to HIGH in MotorRight_A
+# and LOW to HIGH or HIGH to LOW in MotorRight_B
+# ===========================================================================
 def rightmotor(x):
     if x == 1:
         GPIO.output(MotorRight_A, GPIO.HIGH)
@@ -133,12 +142,15 @@ RightPwm = GPIO.PWM(MotorRight_PWM, 100)
 #  object to go forward without any limitation of running_time
 # =======================================================================
 
-dis = 15
+dis = 15  # because of getDistance method(to break go_forward_any loop)
+
+
 def go_forward_any(speed):
     leftmotor(forward0)
     GPIO.output(MotorLeft_PWM, GPIO.HIGH)
     rightmotor(forward1)
     GPIO.output(MotorRight_PWM, GPIO.HIGH)
+    # to avoid collision between go_forward_any method and turn method, insert a infinite loop
     while 1:
         distance = getDistance()
         if distance < dis:
@@ -159,6 +171,7 @@ def go_backward_any(speed):
     GPIO.output(MotorLeft_PWM, GPIO.HIGH)
     rightmotor(backward1)
     GPIO.output(MotorRight_PWM, GPIO.HIGH)
+    # reason is as same as go_forward_any loop
     while 1:
         LeftPwm.ChangeDutyCycle(speed)
         RightPwm.ChangeDutyCycle(speed)
@@ -167,8 +180,8 @@ def go_backward_any(speed):
 # student assignment (5)
 
 # =======================================================================
-#  go_forward_any method has been generated for the three-wheeled moving
-#  objectt to go forward with the limitation of running_time
+#  go_forward method has been generated for the three-wheeled moving
+#  object to go forward with the limitation of running_time
 # =======================================================================
 
 def go_forward(speed, running_time):
@@ -184,7 +197,7 @@ def go_forward(speed, running_time):
 
 
 # =======================================================================
-#  go_backward_any method has been generated for the three-wheeled moving
+#  go_backward method has been generated for the three-wheeled moving
 #  object to go backward with the limitation of running_time
 # =======================================================================
 
@@ -215,11 +228,17 @@ def stop():
     RightPwm.ChangeDutyCycle(0)
 
 
+# =======================================================================
+# setup and initilaize the left motor and right motor
+# =======================================================================
 def pwm_setup():
     LeftPwm.start(0)
     RightPwm.start(0)
 
 
+# =======================================================================
+# stop the car and cleanup gpio
+# =======================================================================
 def pwm_low():
     GPIO.output(MotorLeft_PWM, GPIO.LOW)
     GPIO.output(MotorRight_PWM, GPIO.LOW)   
@@ -227,6 +246,10 @@ def pwm_low():
     RightPwm.ChangeDutyCycle(0)
     GPIO.cleanup()
 
+
+# =======================================================================
+# test code
+# =======================================================================
 if __name__ == "__main__":
     try:
         go_forward(60, 2)

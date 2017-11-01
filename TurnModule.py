@@ -76,6 +76,17 @@ def leftmotor(x):
     else:
         print('Config Error')
 
+# ===========================================================================
+# Control the DC motor to make it rotate clockwise, so the car will
+# move forward.
+# if you have different direction, you need to change HIGH to LOW
+# or LOW to HIGH,in MotorRight_A
+# and LOW to HIGH or HIGH to LOW in MotorRight_B
+# if you have different direction, you need to change HIGH to LOW
+# or LOW to HIGH in MotorRight_A
+# and LOW to HIGH or HIGH to LOW in MotorRight_B
+# ===========================================================================
+
 def rightmotor(x):
     if x == 1:
         GPIO.output(MotorRight_A, GPIO.LOW)
@@ -207,6 +218,9 @@ def leftPointTurn(speed, running_time):  # student assignment (2)
     time.sleep(running_time)
 
 
+#=======================================================================
+# stop the vehicle
+# ======================================================================
 def stop():
     GPIO.output(MotorLeft_PWM, GPIO.LOW)
     GPIO.output(MotorRight_PWM, GPIO.LOW)
@@ -214,33 +228,9 @@ def stop():
     RightPwm.ChangeDutyCycle(0)
 
 
-def temp_stop():
-    LeftPwm.ChangeDutyCycle(0)
-    RightPwm.ChangeDutyCycle(0)
-
-
-def leftPointTurn2(speed, running_time):
-    leftmotor(backward0)
-    rightmotor(forward0)
-    for i in range(10):
-        GPIO.output(MotorLeft_PWM, GPIO.HIGH)
-        GPIO.output(MotorRight_PWM, GPIO.HIGH)
-        LeftPwm.ChangeDutyCycle(speed)
-        RightPwm.ChangeDutyCycle(speed)
-        time.sleep(running_time * 0.1)
-        stop()
-
-def rightPointTurn2(speed, running_time):
-    leftmotor(forward0)
-    rightmotor(backward0)
-    for i in range(10):
-        GPIO.output(MotorLeft_PWM, GPIO.HIGH)
-        GPIO.output(MotorRight_PWM, GPIO.HIGH)
-        LeftPwm.ChangeDutyCycle(speed)
-        RightPwm.ChangeDutyCycle(speed)
-        time.sleep(running_time * 0.1)
-        stop()
-
+#=======================================================================
+# test code
+# ======================================================================
 if __name__ == "__main__":
     leftPointTurn2(80, 2)
     rightPointTurn2(80, 2) 
