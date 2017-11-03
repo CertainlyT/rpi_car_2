@@ -186,15 +186,15 @@ def rightPointTurn(speed, running_time):  # student assignment (1)
     leftmotor(forward0)
     rightmotor(backward0)
 
-    # set the right motor pwm to be ready to go forward
+    # set the left and right motor pwm to be ready to move
     GPIO.output(MotorRight_PWM, GPIO.HIGH)
     GPIO.output(MotorLeft_PWM, GPIO.HIGH)
 
-    # set the speed of the left motor to stop
+    # set the speed of the left motor to go forward
     LeftPwm.ChangeDutyCycle(speed)
-    # set the speed of the right motor to go forward
+    # set the speed of the right motor to go backward
     RightPwm.ChangeDutyCycle(speed)
-    # set the running time of the right motor to go forward
+    # set the running time of the both motors to move
     time.sleep(running_time)
 
 
@@ -206,15 +206,15 @@ def leftPointTurn(speed, running_time):  # student assignment (2)
     rightmotor(forward0)
     leftmotor(backward0)
 
-    # set the right motor pwm to be ready to go forward
+    # set the left and right motor pwm to be ready to move
     GPIO.output(MotorRight_PWM, GPIO.HIGH)
     GPIO.output(MotorLeft_PWM, GPIO.HIGH)
 
-    # set the speed of the left motor to stop
+    # set the speed of the left motor to go backward
     LeftPwm.ChangeDutyCycle(speed)
     # set the speed of the right motor to go forward
     RightPwm.ChangeDutyCycle(speed)
-    # set the running time of the right motor to go forward
+    # set the running time of the both motors to move
     time.sleep(running_time)
 
 
