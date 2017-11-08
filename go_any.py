@@ -229,7 +229,7 @@ def stop():
 
 
 # =======================================================================
-# setup and initilaize the left motor and right motor
+# setup and initialize the left motor and right motor
 # =======================================================================
 def pwm_setup():
     LeftPwm.start(0)

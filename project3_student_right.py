@@ -1,6 +1,6 @@
 ######################################################################
 ### Date: 2017/10/5
-### file name: project3_student.py
+### file name: project3_student_right.py
 ### Purpose: this code has been generated for the three-wheeled moving
 ###         object to perform the project3 with ultra sensor
 ###         swing turn, and point turn
@@ -11,7 +11,7 @@
 # import GPIO library and time module
 # =======================================================================
 import RPi.GPIO as GPIO
-from time import sleep
+import time
 
 # =======================================================================
 #  set GPIO warnings as false
@@ -21,12 +21,12 @@ GPIO.setwarnings(False)
 # =======================================================================
 # import getDistance() method in the ultraModule
 # =======================================================================
-from ultraModule import getDistance
+import ultrasonicSensor
 
 # =======================================================================
 # import TurnModule() method
 # =======================================================================
-from TurnModule import *
+import turning
 
 
 # =======================================================================
@@ -35,24 +35,16 @@ from TurnModule import *
 # student assignment (1)
 # student assignment (2)
 
-
-
 # =======================================================================
 # import go_forward_any(), go_backward_any(), stop(), LeftPwm(),
 # RightPwm(), pwm_setup(), and pwm_low() methods in the module of go_any
 # =======================================================================
-from go_any import *
-
-# implement rightmotor(x)  # student assignment (3)
-# implement go_forward_any(speed): # student assignment (4)
-# implement go_backward_any(speed): # student assignment (5)
-# implement go_forward(speed, running_time)  # student assignment (6)
-# implement go_backward(speed, running_time)  # student assignment (7)
+import movement
 
 # =======================================================================
-# setup and initilaize the left motor and right motor
+# setup and initialize the left motor and right motor
 # =======================================================================
-pwm_setup()
+movement.pwm_setup()
 
 # =======================================================================
 #  define your variables and find out each value of variables
@@ -70,37 +62,35 @@ SwingTr = 0.85  # duration of swing turn
 obstacle = 1  # a number of obstacles
 
 try:
-    distance = getDistance()
+    distance = ultrasonicSensor.measureDistance()
     while True:
-        distance = getDistance()
+        distance = ultrasonicSensor.measureDistance()
         # ultra sensor replies the distance back
         print('distance= ', distance)
-        # If vehicle pass 2 obstalces, it will drive 1 more second and stop.
+        # If vehicle pass 2 obstacles, it will drive 1 more second and stop.
         if obstacle == 3:
-            go_forward(70, 1)
-            pwm_low()
+            movement.go_forward(70, 1)
+            movement.pwm_low()
             break
         # when the distance is above the dis, moving object forwards
-        elif (distance > dis):
-            go_forward_any(70)
+        elif distance > dis:
+            movement.go_forward_infinite(70)
             # stop and wait 1 second
-            stop()
-            sleep(1)
+            movement.stop()
+            time.sleep(1)
             # select type of turn
             if obstacle == 1:
-                rightSwingTurn(SwingPr, SwingTr)
+                turning.rightSwingTurn(SwingPr, SwingTr)
                 obstacle += 1
             else:
-                rightPointTurn(PointPr, PointTr)
+                turning.rightPointTurn(PointPr, PointTr)
                 obstacle += 1
             # after turning, stop and wait 0.3 second
-            stop()
-            sleep(0.3)
-
-
+            movement.stop()
+            time.sleep(0.3)
 
 # when the Ctrl+C key has been pressed,
 # the moving object will be stopped
 
 except KeyboardInterrupt:
-    pwm_low()
+    movement.pwm_low()
